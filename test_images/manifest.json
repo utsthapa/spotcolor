@@ -1,0 +1,638 @@
+[
+  {
+    "path": "test_images\\solid\\single_red.png",
+    "category": "solid",
+    "name": "single_red",
+    "expected_colors": 1,
+    "expected_flags": [],
+    "notes": "Single solid red color"
+  },
+  {
+    "path": "test_images\\solid\\two_colors_split.png",
+    "category": "solid",
+    "name": "two_colors_split",
+    "expected_colors": 2,
+    "expected_flags": [],
+    "notes": "Blue and white split"
+  },
+  {
+    "path": "test_images\\solid\\three_colors_stripes.png",
+    "category": "solid",
+    "name": "three_colors_stripes",
+    "expected_colors": 3,
+    "expected_flags": [],
+    "notes": "RGB stripes"
+  },
+  {
+    "path": "test_images\\solid\\four_colors_quadrants.png",
+    "category": "solid",
+    "name": "four_colors_quadrants",
+    "expected_colors": 4,
+    "expected_flags": [],
+    "notes": "RGBY quadrants"
+  },
+  {
+    "path": "test_images\\solid\\five_colors_stripes.png",
+    "category": "solid",
+    "name": "five_colors_stripes",
+    "expected_colors": 5,
+    "expected_flags": [],
+    "notes": "5 color stripes"
+  },
+  {
+    "path": "test_images\\solid\\six_colors_stripes.png",
+    "category": "solid",
+    "name": "six_colors_stripes",
+    "expected_colors": 6,
+    "expected_flags": [],
+    "notes": "6 color stripes"
+  },
+  {
+    "path": "test_images\\solid\\eight_colors_max.png",
+    "category": "solid",
+    "name": "eight_colors_max",
+    "expected_colors": 8,
+    "expected_flags": [],
+    "notes": "8 colors - maximum allowed"
+  },
+  {
+    "path": "test_images\\solid\\similar_reds.png",
+    "category": "solid",
+    "name": "similar_reds",
+    "expected_colors": 1,
+    "expected_flags": [],
+    "notes": "Two similar reds - should merge"
+  },
+  {
+    "path": "test_images\\solid\\distinct_reds.png",
+    "category": "solid",
+    "name": "distinct_reds",
+    "expected_colors": 2,
+    "expected_flags": [],
+    "notes": "Two distinct reds - should NOT merge"
+  },
+  {
+    "path": "test_images\\logos\\circle_on_white.png",
+    "category": "logos",
+    "name": "circle_on_white",
+    "expected_colors": 2,
+    "expected_flags": [],
+    "notes": "Blue circle on white"
+  },
+  {
+    "path": "test_images\\logos\\shapes_three_colors.png",
+    "category": "logos",
+    "name": "shapes_three_colors",
+    "expected_colors": 4,
+    "expected_flags": [],
+    "notes": "Circle, square, triangle on gray"
+  },
+  {
+    "path": "test_images\\logos\\nested_circles.png",
+    "category": "logos",
+    "name": "nested_circles",
+    "expected_colors": 3,
+    "expected_flags": [],
+    "notes": "Nested circles - blue, white, red"
+  },
+  {
+    "path": "test_images\\logos\\text_blocks.png",
+    "category": "logos",
+    "name": "text_blocks",
+    "expected_colors": 2,
+    "expected_flags": [],
+    "notes": "Simulated text - black on white"
+  },
+  {
+    "path": "test_images\\logos\\gold_star_on_navy.png",
+    "category": "logos",
+    "name": "gold_star_on_navy",
+    "expected_colors": 2,
+    "expected_flags": [],
+    "notes": "Gold star on navy background"
+  },
+  {
+    "path": "test_images\\antialiased\\circle_aa.png",
+    "category": "antialiased",
+    "name": "circle_aa",
+    "expected_colors": 2,
+    "expected_flags": [
+      "filtered_antialiasing"
+    ],
+    "notes": "Anti-aliased circle - should detect 2 colors"
+  },
+  {
+    "path": "test_images\\antialiased\\diagonal_line_aa.png",
+    "category": "antialiased",
+    "name": "diagonal_line_aa",
+    "expected_colors": 2,
+    "expected_flags": [
+      "filtered_antialiasing"
+    ],
+    "notes": "Anti-aliased diagonal line"
+  },
+  {
+    "path": "test_images\\antialiased\\smooth_shapes_aa.png",
+    "category": "antialiased",
+    "name": "smooth_shapes_aa",
+    "expected_colors": 2,
+    "expected_flags": [
+      "filtered_antialiasing"
+    ],
+    "notes": "Smooth shapes with AA"
+  },
+  {
+    "path": "test_images\\antialiased\\three_circles_aa.png",
+    "category": "antialiased",
+    "name": "three_circles_aa",
+    "expected_colors": 4,
+    "expected_flags": [
+      "filtered_antialiasing"
+    ],
+    "notes": "Three AA circles on white"
+  },
+  {
+    "path": "test_images\\antialiased\\circle_heavy_aa.png",
+    "category": "antialiased",
+    "name": "circle_heavy_aa",
+    "expected_colors": 2,
+    "expected_flags": [
+      "filtered_antialiasing"
+    ],
+    "notes": "Circle with heavy anti-aliasing"
+  },
+  {
+    "path": "test_images\\gradients\\linear_horizontal.png",
+    "category": "gradients",
+    "name": "linear_horizontal",
+    "expected_colors": -1,
+    "expected_flags": [],
+    "notes": "Linear gradient - should be rejected"
+  },
+  {
+    "path": "test_images\\gradients\\linear_vertical.png",
+    "category": "gradients",
+    "name": "linear_vertical",
+    "expected_colors": -1,
+    "expected_flags": [],
+    "notes": "Vertical gradient - should be rejected"
+  },
+  {
+    "path": "test_images\\gradients\\radial.png",
+    "category": "gradients",
+    "name": "radial",
+    "expected_colors": -1,
+    "expected_flags": [],
+    "notes": "Radial gradient - should be rejected"
+  },
+  {
+    "path": "test_images\\gradients\\diagonal.png",
+    "category": "gradients",
+    "name": "diagonal",
+    "expected_colors": -1,
+    "expected_flags": [],
+    "notes": "Diagonal gradient - should be rejected"
+  },
+  {
+    "path": "test_images\\gradients\\two_color_gradient.png",
+    "category": "gradients",
+    "name": "two_color_gradient",
+    "expected_colors": -1,
+    "expected_flags": [],
+    "notes": "Red to blue gradient - should be rejected"
+  },
+  {
+    "path": "test_images\\gradients\\subtle_gradient.png",
+    "category": "gradients",
+    "name": "subtle_gradient",
+    "expected_colors": -1,
+    "expected_flags": [],
+    "notes": "Subtle gradient - should be rejected"
+  },
+  {
+    "path": "test_images\\transparency\\circle_on_transparent.png",
+    "category": "transparency",
+    "name": "circle_on_transparent",
+    "expected_colors": 2,
+    "expected_flags": [
+      "has_transparency"
+    ],
+    "notes": "Red circle on transparent (composites to white bg)"
+  },
+  {
+    "path": "test_images\\transparency\\shapes_on_transparent.png",
+    "category": "transparency",
+    "name": "shapes_on_transparent",
+    "expected_colors": 4,
+    "expected_flags": [
+      "has_transparency"
+    ],
+    "notes": "Three shapes on transparent"
+  },
+  {
+    "path": "test_images\\transparency\\semi_transparent_overlay.png",
+    "category": "transparency",
+    "name": "semi_transparent_overlay",
+    "expected_colors": 3,
+    "expected_flags": [
+      "has_transparency",
+      "has_semi_transparent_pixels"
+    ],
+    "notes": "Semi-transparent red circle"
+  },
+  {
+    "path": "test_images\\transparency\\varying_alpha.png",
+    "category": "transparency",
+    "name": "varying_alpha",
+    "expected_colors": 5,
+    "expected_flags": [
+      "has_transparency",
+      "has_semi_transparent_pixels"
+    ],
+    "notes": "Varying transparency - creates 5 distinct blue shades"
+  },
+  {
+    "path": "test_images\\transparency\\aa_on_transparent.png",
+    "category": "transparency",
+    "name": "aa_on_transparent",
+    "expected_colors": 2,
+    "expected_flags": [
+      "has_transparency",
+      "has_semi_transparent_pixels",
+      "filtered_antialiasing"
+    ],
+    "notes": "AA circle on transparent"
+  },
+  {
+    "path": "test_images\\complex\\checkerboard.png",
+    "category": "complex",
+    "name": "checkerboard",
+    "expected_colors": 2,
+    "expected_flags": [],
+    "notes": "Checkerboard pattern - 2 colors"
+  },
+  {
+    "path": "test_images\\complex\\small_accent_region.png",
+    "category": "complex",
+    "name": "small_accent_region",
+    "expected_colors": 3,
+    "expected_flags": [],
+    "notes": "Gray with red accent (white border visible)"
+  },
+  {
+    "path": "test_images\\complex\\near_whites.png",
+    "category": "complex",
+    "name": "near_whites",
+    "expected_colors": 1,
+    "expected_flags": [],
+    "notes": "Very similar whites - should merge"
+  },
+  {
+    "path": "test_images\\complex\\pixel_stripes.png",
+    "category": "complex",
+    "name": "pixel_stripes",
+    "expected_colors": 2,
+    "expected_flags": [],
+    "notes": "1-pixel alternating stripes"
+  },
+  {
+    "path": "test_images\\complex\\dithered_rgb.png",
+    "category": "complex",
+    "name": "dithered_rgb",
+    "expected_colors": 3,
+    "expected_flags": [],
+    "notes": "Dithered RGB pattern"
+  },
+  {
+    "path": "test_images\\photographic\\noise.png",
+    "category": "photographic",
+    "name": "noise",
+    "expected_colors": -1,
+    "expected_flags": [],
+    "notes": "Random noise - should be rejected"
+  },
+  {
+    "path": "test_images\\photographic\\blurred_noise.png",
+    "category": "photographic",
+    "name": "blurred_noise",
+    "expected_colors": -1,
+    "expected_flags": [],
+    "notes": "Lightly blurred noise - should be rejected"
+  },
+  {
+    "path": "test_images\\photographic\\simulated_photo.png",
+    "category": "photographic",
+    "name": "simulated_photo",
+    "expected_colors": -1,
+    "expected_flags": [],
+    "notes": "Simulated photographic content"
+  },
+  {
+    "path": "test_images\\photographic\\noisy_colors.png",
+    "category": "photographic",
+    "name": "noisy_colors",
+    "expected_colors": -1,
+    "expected_flags": [],
+    "notes": "Many unique colors with noise"
+  },
+  {
+    "path": "test_images\\edge_cases\\single_pixel.png",
+    "category": "edge_cases",
+    "name": "single_pixel",
+    "expected_colors": 1,
+    "expected_flags": [],
+    "notes": "Single red pixel"
+  },
+  {
+    "path": "test_images\\edge_cases\\tiny_image.png",
+    "category": "edge_cases",
+    "name": "tiny_image",
+    "expected_colors": 2,
+    "expected_flags": [],
+    "notes": "10x10 pixel image"
+  },
+  {
+    "path": "test_images\\edge_cases\\large_solid.png",
+    "category": "edge_cases",
+    "name": "large_solid",
+    "expected_colors": 1,
+    "expected_flags": [],
+    "notes": "Large single color"
+  },
+  {
+    "path": "test_images\\edge_cases\\dominant_with_accent.png",
+    "category": "edge_cases",
+    "name": "dominant_with_accent",
+    "expected_colors": 2,
+    "expected_flags": [],
+    "notes": "Large dark area with small accent"
+  },
+  {
+    "path": "test_images\\edge_cases\\black_white.png",
+    "category": "edge_cases",
+    "name": "black_white",
+    "expected_colors": 2,
+    "expected_flags": [],
+    "notes": "Pure black and white"
+  },
+  {
+    "path": "test_images\\edge_cases\\nine_colors.png",
+    "category": "edge_cases",
+    "name": "nine_colors",
+    "expected_colors": -1,
+    "expected_flags": [],
+    "notes": "9 colors - exceeds maximum"
+  },
+  {
+    "path": "test_images\\edge_cases\\fully_transparent.png",
+    "category": "edge_cases",
+    "name": "fully_transparent",
+    "expected_colors": 1,
+    "expected_flags": [
+      "has_transparency"
+    ],
+    "notes": "Fully transparent - composites to white"
+  },
+  {
+    "path": "test_images\\edge_cases\\grayscale_steps.png",
+    "category": "edge_cases",
+    "name": "grayscale_steps",
+    "expected_colors": 4,
+    "expected_flags": [],
+    "notes": "4 distinct gray levels"
+  },
+  {
+    "path": "test_images\\realistic\\sports_logo.png",
+    "category": "realistic",
+    "name": "sports_logo",
+    "expected_colors": 4,
+    "expected_flags": [],
+    "notes": "Sports team style logo"
+  },
+  {
+    "path": "test_images\\realistic\\corporate_logo.png",
+    "category": "realistic",
+    "name": "corporate_logo",
+    "expected_colors": 3,
+    "expected_flags": [],
+    "notes": "Corporate logo with icon and text"
+  },
+  {
+    "path": "test_images\\realistic\\badge_emblem.png",
+    "category": "realistic",
+    "name": "badge_emblem",
+    "expected_colors": 3,
+    "expected_flags": [
+      "filtered_antialiasing"
+    ],
+    "notes": "Badge/emblem with AA"
+  },
+  {
+    "path": "test_images\\realistic\\vintage_style.png",
+    "category": "realistic",
+    "name": "vintage_style",
+    "expected_colors": 3,
+    "expected_flags": [],
+    "notes": "Vintage style logo"
+  },
+  {
+    "path": "test_images\\realistic\\minimalist.png",
+    "category": "realistic",
+    "name": "minimalist",
+    "expected_colors": 2,
+    "expected_flags": [],
+    "notes": "Minimalist black and white logo"
+  },
+  {
+    "path": "test_images\\additional\\concentric_rectangles.png",
+    "category": "additional",
+    "name": "concentric_rectangles",
+    "expected_colors": 2,
+    "expected_flags": [],
+    "notes": "Concentric rectangles - 2 colors"
+  },
+  {
+    "path": "test_images\\additional\\polka_dots.png",
+    "category": "additional",
+    "name": "polka_dots",
+    "expected_colors": 2,
+    "expected_flags": [],
+    "notes": "Polka dot pattern"
+  },
+  {
+    "path": "test_images\\additional\\rainbow_stripes.png",
+    "category": "additional",
+    "name": "rainbow_stripes",
+    "expected_colors": 7,
+    "expected_flags": [],
+    "notes": "Rainbow stripes - 7 colors"
+  },
+  {
+    "path": "test_images\\additional\\simple_house_icon.png",
+    "category": "additional",
+    "name": "simple_house_icon",
+    "expected_colors": 4,
+    "expected_flags": [],
+    "notes": "Simple house icon"
+  },
+  {
+    "path": "test_images\\additional\\arrow_shape.png",
+    "category": "additional",
+    "name": "arrow_shape",
+    "expected_colors": 2,
+    "expected_flags": [],
+    "notes": "Arrow shape"
+  },
+  {
+    "path": "test_images\\additional\\cross_shape.png",
+    "category": "additional",
+    "name": "cross_shape",
+    "expected_colors": 2,
+    "expected_flags": [],
+    "notes": "Cross/plus shape"
+  },
+  {
+    "path": "test_images\\additional\\olympic_rings.png",
+    "category": "additional",
+    "name": "olympic_rings",
+    "expected_colors": 6,
+    "expected_flags": [],
+    "notes": "Olympic-style rings"
+  },
+  {
+    "path": "test_images\\additional\\triangle_bg.png",
+    "category": "additional",
+    "name": "triangle_bg",
+    "expected_colors": 2,
+    "expected_flags": [],
+    "notes": "Triangle on background"
+  },
+  {
+    "path": "test_images\\additional\\grid_squares.png",
+    "category": "additional",
+    "name": "grid_squares",
+    "expected_colors": 2,
+    "expected_flags": [],
+    "notes": "Grid of squares"
+  },
+  {
+    "path": "test_images\\additional\\diagonal_stripes.png",
+    "category": "additional",
+    "name": "diagonal_stripes",
+    "expected_colors": 2,
+    "expected_flags": [],
+    "notes": "Diagonal stripes"
+  },
+  {
+    "path": "test_images\\additional\\hexagon.png",
+    "category": "additional",
+    "name": "hexagon",
+    "expected_colors": 2,
+    "expected_flags": [],
+    "notes": "Hexagon shape"
+  },
+  {
+    "path": "test_images\\additional\\three_overlapping_circles.png",
+    "category": "additional",
+    "name": "three_overlapping_circles",
+    "expected_colors": 4,
+    "expected_flags": [],
+    "notes": "Three overlapping circles"
+  },
+  {
+    "path": "test_images\\additional\\ribbon_banner.png",
+    "category": "additional",
+    "name": "ribbon_banner",
+    "expected_colors": 2,
+    "expected_flags": [],
+    "notes": "Ribbon banner shape"
+  },
+  {
+    "path": "test_images\\additional\\shield_shape.png",
+    "category": "additional",
+    "name": "shield_shape",
+    "expected_colors": 3,
+    "expected_flags": [],
+    "notes": "Shield shape"
+  },
+  {
+    "path": "test_images\\additional\\zigzag_pattern.png",
+    "category": "additional",
+    "name": "zigzag_pattern",
+    "expected_colors": 2,
+    "expected_flags": [],
+    "notes": "Zigzag stripe pattern"
+  },
+  {
+    "path": "test_images\\additional\\bullseye_target.png",
+    "category": "additional",
+    "name": "bullseye_target",
+    "expected_colors": 2,
+    "expected_flags": [],
+    "notes": "Bullseye target"
+  },
+  {
+    "path": "test_images\\additional\\speech_bubble.png",
+    "category": "additional",
+    "name": "speech_bubble",
+    "expected_colors": 3,
+    "expected_flags": [],
+    "notes": "Speech bubble"
+  },
+  {
+    "path": "test_images\\additional\\heart_shape.png",
+    "category": "additional",
+    "name": "heart_shape",
+    "expected_colors": 2,
+    "expected_flags": [],
+    "notes": "Heart shape"
+  },
+  {
+    "path": "test_images\\additional\\starburst.png",
+    "category": "additional",
+    "name": "starburst",
+    "expected_colors": 2,
+    "expected_flags": [],
+    "notes": "Starburst pattern"
+  },
+  {
+    "path": "test_images\\additional\\price_tag.png",
+    "category": "additional",
+    "name": "price_tag",
+    "expected_colors": 2,
+    "expected_flags": [],
+    "notes": "Price tag shape"
+  },
+  {
+    "path": "test_images\\print_specific\\halftone.png",
+    "category": "print_specific",
+    "name": "halftone",
+    "expected_colors": 2,
+    "expected_flags": [],
+    "notes": "Halftone pattern - should be 2 colors"
+  },
+  {
+    "path": "test_images\\print_specific\\cmy_separation.png",
+    "category": "print_specific",
+    "name": "cmy_separation",
+    "expected_colors": 3,
+    "expected_flags": [],
+    "notes": "CMY color separation - 3 colors"
+  },
+  {
+    "path": "test_images\\print_specific\\white_on_dark.png",
+    "category": "print_specific",
+    "name": "white_on_dark",
+    "expected_colors": 3,
+    "expected_flags": [],
+    "notes": "White and color on dark - test dark substrate mode"
+  },
+  {
+    "path": "test_images\\print_specific\\with_reg_marks.png",
+    "category": "print_specific",
+    "name": "with_reg_marks",
+    "expected_colors": 3,
+    "expected_flags": [],
+    "notes": "Design with registration marks"
+  }
+]

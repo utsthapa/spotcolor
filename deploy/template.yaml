@@ -1,0 +1,85 @@
+# AWS SAM Template for SpotColor API
+# Deploy with: sam build && sam deploy --guided
+
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: SpotColor API - Screen printing color detection service
+
+Globals:
+  Function:
+    Timeout: 30
+    MemorySize: 1024
+    Runtime: python3.11
+    Architectures:
+      - x86_64
+    Environment:
+      Variables:
+        LAMBDA_HANDLER: "true"
+
+Parameters:
+  Stage:
+    Type: String
+    Default: prod
+    AllowedValues:
+      - dev
+      - staging
+      - prod
+    Description: Deployment stage
+
+Resources:
+  # Lambda Function
+  SpotColorFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: !Sub spotcolor-api-${Stage}
+      Handler: api.lambda_handler.handler
+      CodeUri: ../
+      Description: SpotColor API Lambda function
+      Events:
+        ApiRoot:
+          Type: HttpApi
+          Properties:
+            Path: /
+            Method: ANY
+            ApiId: !Ref SpotColorHttpApi
+        ApiProxy:
+          Type: HttpApi
+          Properties:
+            Path: /{proxy+}
+            Method: ANY
+            ApiId: !Ref SpotColorHttpApi
+      Policies:
+        - AWSLambdaBasicExecutionRole
+
+  # HTTP API (API Gateway v2 - lower cost than REST API)
+  SpotColorHttpApi:
+    Type: AWS::Serverless::HttpApi
+    Properties:
+      StageName: !Ref Stage
+      CorsConfiguration:
+        AllowOrigins:
+          - "*"
+        AllowHeaders:
+          - "*"
+        AllowMethods:
+          - GET
+          - POST
+          - OPTIONS
+        MaxAge: 600
+
+Outputs:
+  ApiUrl:
+    Description: API Gateway endpoint URL
+    Value: !Sub "https://${SpotColorHttpApi}.execute-api.${AWS::Region}.amazonaws.com/${Stage}/"
+
+  FunctionArn:
+    Description: Lambda Function ARN
+    Value: !GetAtt SpotColorFunction.Arn
+
+  SwaggerUrl:
+    Description: Swagger UI documentation URL
+    Value: !Sub "https://${SpotColorHttpApi}.execute-api.${AWS::Region}.amazonaws.com/${Stage}/docs"
+
+  ReDocUrl:
+    Description: ReDoc documentation URL
+    Value: !Sub "https://${SpotColorHttpApi}.execute-api.${AWS::Region}.amazonaws.com/${Stage}/redoc"
