@@ -1,16 +1,26 @@
-FROM public.ecr.aws/lambda/python:3.11
+# Simpler Dockerfile for web deployment (not Lambda)
+FROM python:3.11-slim
 
-# Install build dependencies for NumPy/SciPy
-RUN yum install -y gcc gcc-c++ && yum clean all
+WORKDIR /app
 
-# Copy requirements and install dependencies
-COPY deploy/requirements-lambda.txt .
-RUN pip install --upgrade pip && \
-    pip install -r requirements-lambda.txt --target "${LAMBDA_TASK_ROOT}"
+# Install system dependencies
+RUN apt-get update && apt-get install -y \
+    gcc \
+    g++ \
+    && rm -rf /var/lib/apt/lists/*
+
+# Copy requirements (use a simpler version for web)
+COPY requirements.txt .
+
+# Install Python dependencies
+RUN pip install --no-cache-dir -r requirements.txt
 
 # Copy application code
-COPY api/ ${LAMBDA_TASK_ROOT}/api/
-COPY screenprint/ ${LAMBDA_TASK_ROOT}/screenprint/
+COPY api/ /app/api/
+COPY screenprint/ /app/screenprint/
 
-# Set the Lambda handler
-CMD ["api.lambda_handler.handler"]
+# Expose port
+EXPOSE 8000
+
+# Run the server
+CMD ["uvicorn", "api.main:app", "--host", "0.0.0.0", "--port", "8000"]
