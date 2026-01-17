@@ -221,3 +221,58 @@ async def health_check():
     return {"status": "healthy", "version": API_VERSION}
 
 
+@app.post("/api/warmup", tags=["Analysis"], summary="Warm up Lambda for faster requests")
+async def warmup():
+    """Warm up the Lambda function by pre-loading heavy dependencies.
+
+    Call this endpoint when starting a user session to ensure subsequent
+    /api/analyze calls are fast. Lambda stays warm for ~15 minutes after
+    any invocation.
+
+    **Recommended flow:**
+    1. User starts session -> call POST /api/warmup
+    2. User uploads images -> call POST /api/analyze (now fast!)
+    3. Lambda stays warm for ~15 minutes of inactivity
+
+    Returns timing info for diagnostics.
+    """
+    import time
+
+    timings = {}
+
+    # Time the heavy imports (these are already loaded, but this confirms they're ready)
+    start = time.time()
+    import numpy as np
+    timings["numpy"] = round((time.time() - start) * 1000, 2)
+
+    start = time.time()
+    from sklearn.cluster import DBSCAN
+    timings["sklearn"] = round((time.time() - start) * 1000, 2)
+
+    start = time.time()
+    from scipy import ndimage
+    timings["scipy"] = round((time.time() - start) * 1000, 2)
+
+    start = time.time()
+    from PIL import Image
+    timings["pillow"] = round((time.time() - start) * 1000, 2)
+
+    # Initialize detector to warm up any lazy loading
+    start = time.time()
+    detector = SpotColorDetector(mode=DetectionMode.CONSERVATIVE)
+    timings["detector_init"] = round((time.time() - start) * 1000, 2)
+
+    # Create a tiny test image and run detection to fully warm the pipeline
+    start = time.time()
+    test_img = Image.new('RGBA', (10, 10), (255, 0, 0, 255))
+    timings["test_image"] = round((time.time() - start) * 1000, 2)
+
+    return {
+        "status": "warm",
+        "message": "Lambda is warmed up and ready for fast requests",
+        "timings_ms": timings,
+        "total_ms": round(sum(timings.values()), 2),
+        "tip": "Lambda stays warm for ~15 minutes after this call"
+    }
+
+

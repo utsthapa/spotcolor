@@ -87,12 +87,17 @@ class SpotColorDetector:
     # Anti-aliasing detection
     AA_EDGE_THRESHOLD = 0.1             # Edge detection sensitivity
     AA_MIN_REGION_SIZE = 5              # Minimum pixels for a "real" color region
+    MAX_PIXELS = 1_000_000              # Safety cap to keep processing time predictable
+    UNIQUE_COLOR_QUANTIZE_THRESHOLD = 50_000   # Above this, quantize to reduce work
+    UNIQUE_COLOR_FAST_FAIL_THRESHOLD = 120_000 # Above this, treat as photographic
+    QUANTIZE_COLORS = 256
 
     def __init__(
         self,
         mode: DetectionMode = DetectionMode.CONSERVATIVE,
         dark_substrate: bool = False,
-        background_color: tuple[int, int, int] = (255, 255, 255)
+        background_color: tuple[int, int, int] = (255, 255, 255),
+        max_pixels: int | None = None
     ):
         """Initialize the detector.
 
@@ -100,10 +105,12 @@ class SpotColorDetector:
             mode: Detection mode (conservative or aggressive)
             dark_substrate: If True, composite transparency against dark background
             background_color: Background color for transparency compositing
+            max_pixels: Optional cap for pixel count; images above this are downscaled
         """
         self.mode = mode
         self.dark_substrate = dark_substrate
         self.background_color = (0, 0, 0) if dark_substrate else background_color
+        self.max_pixels = max_pixels or self.MAX_PIXELS
         self._flags: list[str] = []
 
     def detect(self, image_path: str | Path) -> DetectionResult:
@@ -128,6 +135,20 @@ class SpotColorDetector:
         if img.mode != "RGBA":
             img = img.convert("RGBA")
 
+        # Resize oversized inputs to keep processing within API/Gateway time limits
+        original_size = img.size
+        total_pixels = original_size[0] * original_size[1]
+        if self.max_pixels and total_pixels > self.max_pixels:
+            scale = (self.max_pixels / total_pixels) ** 0.5
+            new_size = (
+                max(1, int(original_size[0] * scale)),
+                max(1, int(original_size[1] * scale))
+            )
+            img = img.resize(new_size, Image.LANCZOS)
+            self._flags.append(
+                f"resized_for_performance_{original_size[0]}x{original_size[1]}_to_{new_size[0]}x{new_size[1]}"
+            )
+
         # Phase 1: Flatten transparency
         flattened, has_transparency, has_semi_transparent = self._flatten_transparency(img)
 
@@ -135,6 +156,22 @@ class SpotColorDetector:
             self._flags.append("has_transparency")
         if has_semi_transparent:
             self._flags.append("has_semi_transparent_pixels")
+
+        # Fast unique-color scan to avoid pathological runtime on photographic images
+        color_scan = flattened.getcolors(maxcolors=self.UNIQUE_COLOR_FAST_FAIL_THRESHOLD + 1)
+        unique_count = len(color_scan) if color_scan is not None else self.UNIQUE_COLOR_FAST_FAIL_THRESHOLD + 1
+
+        if unique_count > self.UNIQUE_COLOR_FAST_FAIL_THRESHOLD:
+            return self._unsuitable_result(
+                f"Image contains too many unique colors ({unique_count}); likely photographic or gradient"
+            )
+
+        # Quantize very high-color images to keep AA/DBSCAN steps performant
+        if unique_count > self.UNIQUE_COLOR_QUANTIZE_THRESHOLD:
+            flattened = flattened.convert("P", palette=Image.ADAPTIVE, colors=self.QUANTIZE_COLORS).convert("RGB")
+            self._flags.append(
+                f"quantized_for_performance_{unique_count}_colors_to_{self.QUANTIZE_COLORS}"
+            )
 
         # Convert to numpy array (RGB, 0-255)
         pixels = np.array(flattened)
@@ -303,7 +340,7 @@ class SpotColorDetector:
                 if max_gap < 0.03 and avg_gap < 0.005:
                     return True, f"Image contains smooth gradient ({unique_count} unique colors)"
 
-            # Check for color-space gradients (like red→blue where L is constant but a/b change)
+            # Check for color-space gradients (like red->blue where L is constant but a/b change)
             # Sort by a or b channel and check for continuous distribution
             if unique_count > 50 and (a_range > 0.2 or b_range > 0.2):
                 a_sorted = np.sort(a_values)
@@ -418,6 +455,12 @@ class SpotColorDetector:
             flat_pixels, axis=0, return_inverse=True, return_counts=True
         )
         color_map = inverse_indices.reshape(h, w)
+
+        # On large/high-color images, skip expensive per-color component analysis.
+        # Using the edge mask directly keeps runtime bounded while still excluding edges.
+        if len(unique_colors) > 128 or total_pixels > 1_000_000:
+            aa_mask = edge_dilated
+            return pixels, aa_mask, 0
 
         # Identify core colors: those that form significant coherent regions
         # away from edges
